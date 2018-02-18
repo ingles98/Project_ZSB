@@ -50,16 +50,18 @@ function love.keypressed(key, scancode, isrepeat)
         player.targetY = love.graphics.getHeight()*2 - 960*scaleY
     end
 
-    if key == '+' then
-        camera:scale(0.1)
-    elseif key == '-' then
-        camera:scale(-0.1)
-    end
 end
 
 function love.mousepressed(x, y, button, isTouch)
     for k,v in ipairs(gui) do
         v:mousePressed()
+    end
+end
+function love.wheelmoved(x, y)
+    if y > 0 then
+        camera:scale(0.04)
+    elseif y < 0 then
+        camera:scale(-0.04)
     end
 end
 

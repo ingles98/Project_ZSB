@@ -27,8 +27,10 @@ end
 
 function camera:scale(sx, sy)
   sx = sx or 1
-  self.scaleX = self.scaleX + sx
-  self.scaleY = self.scaleY + (sy or sx)
+  if (self.scaleX + sx) > 0.01 and (self.scaleX + sx) < 1 then -- zoom limit is here ._. didnt want to make a var for this.
+    self.scaleX = self.scaleX + sx
+    self.scaleY = self.scaleY + (sy or sx)
+  end
 end
 
 function camera:setPosition(x, y)
