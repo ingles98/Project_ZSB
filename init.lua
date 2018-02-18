@@ -41,11 +41,7 @@ print('---- Setting Up Level. ('..os.clock()..')')
 for z,v in pairs(map) do
     for k,v in pairs(map[z]) do
         for l,m in pairs(map[z][k]) do
-                if z == 0 then
-                    level[((#level +1) or 0)] = objSurface:new({dim = {z = z,x = -2*cos +( cos*l) +k*cos, y = -sin + (sin*l) -k*sin , w = tileSize, h=tileSize,pos= {x=k,y=l,z=z}} })
-                elseif z == 1 and k >= 5 and k <= 15 and l >= 5 and l <= 15 then
-                    level[((#level +1) or 0)] = objSurface:new({dim = {z = z,x = -2*cos +( cos*l) +k*cos, y = (-sin + (sin*l) -k*sin) -sin*z*2.5 , w = tileSize, h=tileSize, pos = {x=k,y=l,z=z}} })
-                end
+            level[((#level +1) or 0)] = objSurface:new({dim = {z = z,x = -2*cos +( cos*l) +k*cos, y = -sin + (sin*l) -k*sin , w = tileSize, h=tileSize,pos= {x=k,y=l,z=z}} })
         end
     end
 end

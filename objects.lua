@@ -138,9 +138,6 @@ end
 
 function objSurface:draw()
     local r,g,b,a = 255,255,255,255
-    if self.dim.z == 1 then
-        r,g,b,a = 0,0,0,190
-    end
     love.graphics.setColor(r, g, b, a)
     love.graphics.polygon('fill',self.points)
     love.graphics.setColor(0, 255, 0, 255)
