@@ -1,3 +1,5 @@
+
+
 Object = {
     colision = true,
     identifier = 'Object',
@@ -15,12 +17,6 @@ end
 function Object:init()
 end
 
-function Object:getComponent()
-    for k,v in ipairs(level) do
-        if v == self then return k end
-    end
-end
-
 function Object:draw()
     local r,g,b,a = love.graphics.getColor()
     love.graphics.setColor(self.color)
@@ -34,9 +30,9 @@ end
 objSurface = {
     colision = false,
     identifier = 'surface',
-    color = {255,255,255,255},
+    color = {255,255,255,100},
     stroke = 0,
-    dim = {z = 0, x = 100, y = 200,h = 10, w = 10, pos = {x=0,y=0,z=0}},
+    dim = {z = 0, x = 100, y = 200,h = 10, w = 10, pos = {x=0,y=0,z=0,xx=0,yy=0}},
 }
 
 function getTile(x,y,z) -- Not yet in use.
@@ -70,80 +66,90 @@ function objSurface:init()
 
     local points = {x1,y1,x2,y2,x3,y3,x4,y4}
     self.points = points
+    self.color = {255,255,255,100}
 end
 
-function objSurface:getComponent()
-    for k,v in ipairs(level) do
-        if v == self then return k end
-    end
-end
+function objSurface:checkColision(x,y)
+  local pos = self.dim.pos
+  pos.z = pos.z +1
+  local t = self.points
+  local x1 = t[1]
+  local y1 = t[2]
+  local x2 = t[3]
+  local y2 = t[4]
+  local x3 = t[5]
+  local y3 = t[6]
+  local x4 = t[7]
+  local y4 = t[8]
 
+  local lA = math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
+  local lB = math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2))
+  local lC = math.sqrt((x1-x3)*(x1-x3)+(y1-y3)*(y3-y1))
+  local s = (lA + lB + lC)/2
+  local a0 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))*2
+
+  lA = math.sqrt((x1-x)*(x1-x)+(y1-y)*(y1-y))
+  lB = math.sqrt((x2-x)*(x2-x)+(y2-y)*(y2-y))
+  lC = math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
+  s = (lA + lB + lC)/2
+  local a1 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
+
+  lA = math.sqrt((x3-x)*(x3-x)+(y3-y)*(y3-y))
+  lB = math.sqrt((x2-x)*(x2-x)+(y2-y)*(y2-y))
+  lC = math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2))
+  s = (lA + lB + lC)/2
+  local a2 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
+
+  lA = math.sqrt((x1-x)*(x1-x)+(y1-y)*(y1-y))
+  lB = math.sqrt((x4-x)*(x4-x)+(y4-y)*(y4-y))
+  lC = math.sqrt((x1-x4)*(x1-x4)+(y1-y4)*(y1-y4))
+  s = (lA + lB + lC)/2
+  local a3 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
+
+  lA = math.sqrt((x3-x)*(x3-x)+(y3-y)*(y3-y))
+  lB = math.sqrt((x4-x)*(x4-x)+(y4-y)*(y4-y))
+  lC = math.sqrt((x3-x4)*(x3-x4)+(y3-y4)*(y3-y4))
+  s = (lA + lB + lC)/2
+  local a4 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
+
+  aAll = a1+a2+a3+a4
+
+  a0 = math.floor(a0)
+  aAll = math.floor(aAll)
+  if a0 == aAll then
+      return true
+  else
+      return false
+  end
+end
 function objSurface:update(dt) -- Indeed this will «probably» need a huge optimization.
-    local pos = self.dim.pos
-    pos.z = pos.z +1
 
-    local x = camera.x + love.mouse.getX()/camera.scaleX
-    local y = camera.y + love.mouse.getY()/camera.scaleY
-    local t = self.points
-    local x1 = t[1]
-    local y1 = t[2]
-    local x2 = t[3]
-    local y2 = t[4]
-    local x3 = t[5]
-    local y3 = t[6]
-    local x4 = t[7]
-    local y4 = t[8]
-
-    local lA = math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
-    local lB = math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2))
-    local lC = math.sqrt((x1-x3)*(x1-x3)+(y1-y3)*(y3-y1))
-    local s = (lA + lB + lC)/2
-    local a0 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))*2
-
-    lA = math.sqrt((x1-x)*(x1-x)+(y1-y)*(y1-y))
-    lB = math.sqrt((x2-x)*(x2-x)+(y2-y)*(y2-y))
-    lC = math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
-    s = (lA + lB + lC)/2
-    local a1 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
-
-    lA = math.sqrt((x3-x)*(x3-x)+(y3-y)*(y3-y))
-    lB = math.sqrt((x2-x)*(x2-x)+(y2-y)*(y2-y))
-    lC = math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2))
-    s = (lA + lB + lC)/2
-    local a2 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
-
-    lA = math.sqrt((x1-x)*(x1-x)+(y1-y)*(y1-y))
-    lB = math.sqrt((x4-x)*(x4-x)+(y4-y)*(y4-y))
-    lC = math.sqrt((x1-x4)*(x1-x4)+(y1-y4)*(y1-y4))
-    s = (lA + lB + lC)/2
-    local a3 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
-
-    lA = math.sqrt((x3-x)*(x3-x)+(y3-y)*(y3-y))
-    lB = math.sqrt((x4-x)*(x4-x)+(y4-y)*(y4-y))
-    lC = math.sqrt((x3-x4)*(x3-x4)+(y3-y4)*(y3-y4))
-    s = (lA + lB + lC)/2
-    local a4 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
-
-    aAll = a1+a2+a3+a4
-
-    a0 = math.floor(a0)
-    aAll = math.floor(aAll)
-    if a0 == aAll then
-        self.stroke = 255
+    if self:checkColision(camera.x + love.mouse.getX()/camera.scaleX,camera.y + love.mouse.getY()/camera.scaleY) then --checks mouse
+      self.stroke = 255
+      if love.mouse.isDown(1) then
+        self['color'][1] = 0
+      end
     else
-        self.stroke = 0
+      self.stroke = 0
     end
+
+    if self:checkColision(player.x,player.y) then
+      player.chunkX,player.chunkY = self.dim.pos.xx, self.dim.pos.yy
+    end
+
 end
 
 
 function objSurface:draw()
-    local r,g,b,a = 255,255,255,255
+    local br,bg,bb,ba = love.graphics.getColor()
+    local r,g,b,a = self.color
     love.graphics.setColor(r, g, b, a)
     love.graphics.polygon('fill',self.points)
     love.graphics.setColor(0, 255, 0, 255)
     love.graphics.polygon('line',self.points)
     love.graphics.setColor(255, 0, 255, self.stroke)
     love.graphics.polygon('line',self.points)
+    love.graphics.setColor(br,bg,bb,ba)
 end
 
 

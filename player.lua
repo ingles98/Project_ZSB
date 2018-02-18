@@ -1,4 +1,4 @@
-player = {hp = 100, hitRadius = 100, speed = 1000, x = 0, y = 0}
+player = {hp = 100, hitRadius = 100, speed = 190, x = 19500, y = 39,chunkX = 0,chunkY = 0}
 
 player.targetX = player.x
 player.targetY = player.y
@@ -12,9 +12,13 @@ function player:move(vecX,vecY)
 end
 function player:draw()
     camera:set()
-    for k,v in ipairs(level) do
-        v:draw()
-    end
+
+    local r,g,b,a = love.graphics.getColor()
+    love.graphics.setColor(255, 255, 255, 255)
+    chunkHandler:drawWorld() -- grab this code around to the chunkhandler..
+    love.graphics.setColor(r, g, b, a)
+
+
     local r,g,b,a = love.graphics.getColor()
     love.graphics.setColor(255, 255, 255,155)
     love.graphics.circle('fill', self.x, self.y, self.hitRadius)
@@ -45,7 +49,10 @@ function player:update(dt)
     camera.x = self.x - (love.graphics.getWidth()/2)/camera.scaleX
     camera.y = self.y - (love.graphics.getHeight()/2)/camera.scaleY
 
-    for k,v in ipairs(level) do
-        v:update()
-    end
+
+    local w = chunkHandler.width
+    local h = chunkHandler.height
+
+    chunkHandler:updateWorld()
+
 end

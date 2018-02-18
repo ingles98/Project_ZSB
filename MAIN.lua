@@ -5,7 +5,6 @@ print('--Done. ('..os.clock()..')')
 require 'mainCamera'
 require 'modules'
 require 'player'
-require 'objects'
 require 'gui'
 print('Core data loaded. ('..os.clock()..')')
 print('Game loaded. Player is at '..player.x..', '..player.y)
@@ -14,6 +13,7 @@ function love.update(dt)
     local dt = dt
     mouseUpdate()
     player:update(dt)
+    --chunkHandler:update(dt)
 end
 
 function love.draw()
@@ -22,6 +22,7 @@ function love.draw()
     love.graphics.setColor(255, 0, 255, 255)
     love.graphics.scale(scaleX, scaleY)
     love.graphics.printf('X: '..love.mouse.getX()..' - Y: '..love.mouse.getY(), 1920 - 350, 45, 300, 'right')
+    love.graphics.printf('Xx: '..player.chunkX..' - Yy: '..player.chunkY, 1920 - 350, 89, 300, 'right')
     drawGui()
     love.graphics.pop()
     love.graphics.setColor(255, 255, 255, 255)

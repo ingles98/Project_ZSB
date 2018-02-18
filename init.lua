@@ -1,3 +1,5 @@
+binser = require'binser-master/binser'
+require'chunkHandler'
 print('--- Setting up variables. ('..os.clock()..')')
 windowFlags = {resizable = true}
 curX = love.mouse.getX()
@@ -18,36 +20,18 @@ print('--- Setting up cursor. ('..os.clock()..')')
 curArrow_Img = love.image.newImageData('Data/cursor_arrow.png')
 curArrow = love.mouse.newCursor(curArrow_Img, curArrow_Img:getWidth()/2, 1)
 
-print('--- Constructing Level. ('..os.clock()..')')
-level = {}
-
-local map = {}
-
-for z= -1,3 do
-    map[z] = {}
-    for i=0,20 do
-        map[z][i] = {}
-        for j=0,20 do
-            map[z][i][j] = 0
-        end
-    end
-end
 print('---- Requiring Objects. ('..os.clock()..')')
 require 'objects'
 local sin = math.abs(math.sin(tileAngle) *tileSize*math.cos(tileAngle*2))
 local cos = math.abs(math.cos(tileAngle) *tileSize*math.cos(tileAngle*2))
 
-print('---- Setting Up Level. ('..os.clock()..')')
-for z,v in pairs(map) do
-    for k,v in pairs(map[z]) do
-        for l,m in pairs(map[z][k]) do
-            level[((#level +1) or 0)] = objSurface:new({dim = {z = z,x = -2*cos +( cos*l) +k*cos, y = -sin + (sin*l) -k*sin , w = tileSize, h=tileSize,pos= {x=k,y=l,z=z}} })
-        end
-    end
-end
+if not love.filesystem.exists( 'world1' ) then
+    print('--- Constructing Level. ('..os.clock()..')')
+    level = {}
 
--- Initializing level objects
-print('---- Finishing and initializing Level. ('..os.clock()..')')
-for k,v in ipairs(level) do
-    v:init()
+    world = {}
+    chunk = {}
+    local w,h = chunkHandler.width, chunkHandler.height
+    love.filesystem.createDirectory( 'world1' )
+
 end
