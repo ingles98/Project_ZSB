@@ -1,4 +1,3 @@
-grid_prop = {zoom = 1}
 Object = {
     colision = true,
     identifier = 'Object',
@@ -28,11 +27,9 @@ function Object:draw()
     love.graphics.rectangle('fill', self.dim.x, self.dim.y, self.dim.w or 10, self.dim.h or 10)
     love.graphics.setColor(r,g,b,a)
 end
-function Object:update(dt)
 
+function Object:update(dt)
 end
---obj Subclasses
---objSurface = Object:new({identifier = 'surface', colision = false})
 
 objSurface = {
     colision = false,
@@ -42,7 +39,7 @@ objSurface = {
     dim = {z = 0, x = 100, y = 200,h = 10, w = 10, pos = {x=0,y=0,z=0}},
 }
 
-function getTile(x,y,z)
+function getTile(x,y,z) -- Not yet in use.
     for k,v in ipairs(level) do
         if v.dim.pos == {x,y,z} then return k end
     end
@@ -81,63 +78,61 @@ function objSurface:getComponent()
     end
 end
 
-function objSurface:update(dt)
+function objSurface:update(dt) -- Indeed this will «probably» need a huge optimization.
     local pos = self.dim.pos
     pos.z = pos.z +1
 
+    local x = camera.x + love.mouse.getX()/camera.scaleX
+    local y = camera.y + love.mouse.getY()/camera.scaleY
+    local t = self.points
+    local x1 = t[1]
+    local y1 = t[2]
+    local x2 = t[3]
+    local y2 = t[4]
+    local x3 = t[5]
+    local y3 = t[6]
+    local x4 = t[7]
+    local y4 = t[8]
 
-        local x = camera.x + love.mouse.getX()/camera.scaleX
-        local y = camera.y + love.mouse.getY()/camera.scaleY
-        local t = self.points
-        local x1 = t[1]
-        local y1 = t[2]
-        local x2 = t[3]
-        local y2 = t[4]
-        local x3 = t[5]
-        local y3 = t[6]
-        local x4 = t[7]
-        local y4 = t[8]
+    local lA = math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
+    local lB = math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2))
+    local lC = math.sqrt((x1-x3)*(x1-x3)+(y1-y3)*(y3-y1))
+    local s = (lA + lB + lC)/2
+    local a0 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))*2
 
-        local lA = math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))
-        local lB = math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2))
-        local lC = math.sqrt((x1-x3)*(x1-x3)+(y1-y3)*(y3-y1))
-        local s = (lA + lB + lC)/2
-        local a0 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))*2
+    lA = math.sqrt((x1-x)*(x1-x)+(y1-y)*(y1-y))
+    lB = math.sqrt((x2-x)*(x2-x)+(y2-y)*(y2-y))
+    lC = math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
+    s = (lA + lB + lC)/2
+    local a1 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
 
-        lA = math.sqrt((x1-x)*(x1-x)+(y1-y)*(y1-y))
-        lB = math.sqrt((x2-x)*(x2-x)+(y2-y)*(y2-y))
-        lC = math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
-        s = (lA + lB + lC)/2
-        local a1 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
+    lA = math.sqrt((x3-x)*(x3-x)+(y3-y)*(y3-y))
+    lB = math.sqrt((x2-x)*(x2-x)+(y2-y)*(y2-y))
+    lC = math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2))
+    s = (lA + lB + lC)/2
+    local a2 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
 
-        lA = math.sqrt((x3-x)*(x3-x)+(y3-y)*(y3-y))
-        lB = math.sqrt((x2-x)*(x2-x)+(y2-y)*(y2-y))
-        lC = math.sqrt((x3-x2)*(x3-x2)+(y3-y2)*(y3-y2))
-        s = (lA + lB + lC)/2
-        local a2 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
+    lA = math.sqrt((x1-x)*(x1-x)+(y1-y)*(y1-y))
+    lB = math.sqrt((x4-x)*(x4-x)+(y4-y)*(y4-y))
+    lC = math.sqrt((x1-x4)*(x1-x4)+(y1-y4)*(y1-y4))
+    s = (lA + lB + lC)/2
+    local a3 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
 
-        lA = math.sqrt((x1-x)*(x1-x)+(y1-y)*(y1-y))
-        lB = math.sqrt((x4-x)*(x4-x)+(y4-y)*(y4-y))
-        lC = math.sqrt((x1-x4)*(x1-x4)+(y1-y4)*(y1-y4))
-        s = (lA + lB + lC)/2
-        local a3 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
+    lA = math.sqrt((x3-x)*(x3-x)+(y3-y)*(y3-y))
+    lB = math.sqrt((x4-x)*(x4-x)+(y4-y)*(y4-y))
+    lC = math.sqrt((x3-x4)*(x3-x4)+(y3-y4)*(y3-y4))
+    s = (lA + lB + lC)/2
+    local a4 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
 
-        lA = math.sqrt((x3-x)*(x3-x)+(y3-y)*(y3-y))
-        lB = math.sqrt((x4-x)*(x4-x)+(y4-y)*(y4-y))
-        lC = math.sqrt((x3-x4)*(x3-x4)+(y3-y4)*(y3-y4))
-        s = (lA + lB + lC)/2
-        local a4 = math.sqrt(s*(s-lA)*(s-lB)*(s-lC))
+    aAll = a1+a2+a3+a4
 
-        aAll = a1+a2+a3+a4
-
-        a0 = math.floor(a0)
-        aAll = math.floor(aAll)
-        if a0 == aAll then
-            self.stroke = 255
-        else
-            self.stroke = 0
-        end
-
+    a0 = math.floor(a0)
+    aAll = math.floor(aAll)
+    if a0 == aAll then
+        self.stroke = 255
+    else
+        self.stroke = 0
+    end
 end
 
 

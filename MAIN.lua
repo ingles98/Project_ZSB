@@ -1,9 +1,14 @@
+print('Loading Core data..')
+print('--Initializing...')
 require 'init'
+print('--Done. ('..os.clock()..')')
 require 'mainCamera'
 require 'modules'
 require 'player'
 require 'objects'
 require 'gui'
+print('Core data loaded. ('..os.clock()..')')
+print('Game loaded. Player is at '..player.x..', '..player.y)
 
 function love.update(dt)
     local dt = dt
@@ -17,19 +22,14 @@ function love.draw()
     love.graphics.setColor(255, 0, 255, 255)
     love.graphics.scale(scaleX, scaleY)
     love.graphics.printf('X: '..love.mouse.getX()..' - Y: '..love.mouse.getY(), 1920 - 350, 45, 300, 'right')
-    --love.graphics.printf(level[1]['dim']['x']..', '..level[1]['dim']['y'],1920 - 350, 90, 300, 'right')
     drawGui()
     love.graphics.pop()
-    --love.graphics.print(, love.graphics.getWidth() - 100*scaleX, 10*scaleY)
     love.graphics.setColor(255, 255, 255, 255)
 end
 
 function love.resize(w, h)
     scaleX = love.graphics.getWidth()*1 / 1920
     scaleY = love.graphics.getHeight()*1 / 1080
-    --player.y = player.y - player.y * scaleY
-    --player.x = player.x - player.x * scaleX
-    --font = love.graphics.newFont(30 * scaleX)
     love.graphics.setFont(font)
 end
 
@@ -72,7 +72,4 @@ function mouseUpdate()
     y2 = y1
     x3 = x1
     y3 = y1 + 12
-end
-function drawMouse()
-
 end
