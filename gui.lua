@@ -2,10 +2,10 @@ gui = {}
 guiObj = {
     type = 'class',
     dim = {
-        x = 0,
-        y = 0,
-        w = 0,
-        h = 0
+        x = 1,
+        y = 1,
+        w = 1,
+        h = 1
     },
     structural = false
 }

@@ -1,4 +1,4 @@
-player = {hp = 100, hitRadius = 30, speed = 60, x = 0, y = 0}
+player = {hp = 100, hitRadius = 30, speed = 70, x = 0, y = 0}
 player.colisions = {}
 player.targetX = player.x
 player.targetY = player.y
