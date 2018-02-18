@@ -9,9 +9,6 @@ function love.update(dt)
     local dt = dt
     mouseUpdate()
     player:update(dt)
-    for k,v in ipairs(level) do
-        v:update(dt)
-    end
 end
 
 function love.draw()
@@ -19,7 +16,8 @@ function love.draw()
     love.graphics.push()
     love.graphics.setColor(255, 0, 255, 255)
     love.graphics.scale(scaleX, scaleY)
-    love.graphics.printf('X: '..love.mouse.getX()..' - Y: '..love.mouse.getY(), 1920 - 350, 25, 300, 'right')
+    love.graphics.printf('X: '..love.mouse.getX()..' - Y: '..love.mouse.getY(), 1920 - 350, 45, 300, 'right')
+    --love.graphics.printf(level[1]['dim']['x']..', '..level[1]['dim']['y'],1920 - 350, 90, 300, 'right')
     drawGui()
     love.graphics.pop()
     --love.graphics.print(, love.graphics.getWidth() - 100*scaleX, 10*scaleY)
@@ -41,6 +39,21 @@ function love.keypressed(key, scancode, isrepeat)
     end
     if key == 'f10' then
         editor = not editor
+    end
+    if key == 'f12' and currentCur == 'arrow' then
+        currentCur = 'crosshair'
+    elseif key == 'f12' and currentCur == 'crosshair' then
+        currentCur = 'arrow'
+    end
+    if key == 'n' then
+        player.targetX = 960
+        player.targetY = love.graphics.getHeight()*2 - 960*scaleY
+    end
+
+    if key == '+' then
+        camera:scale(0.1)
+    elseif key == '-' then
+        camera:scale(-0.1)
     end
 end
 

@@ -2,10 +2,10 @@ gui = {}
 guiObj = {
     type = 'class',
     dim = {
-        x = 1,
-        y = 1,
-        w = 1,
-        h = 1
+        x = 0,
+        y = 0,
+        w = 0,
+        h = 0
     },
     structural = false
 }
@@ -75,15 +75,34 @@ gui[#gui+1] = cur
 
 cur = guiCursor:new({id = 'arrow'})
 function cur:draw()
+    --[[
     local r,g,b,a = love.graphics.getColor()
     local x = love.mouse.getX() /scaleX
     local y = love.mouse.getY() /scaleY
     local scaleX = 1
     local scaleY = 1
-    poli = {x,y}
+    local x2 = x +14
+    local y2 = y +14
+
+    local x3 = x +20
+    local y3 = y-1
+    local x4 = x +20
+    local y4 = y +1
+
+    local x5 = x+14
+    local y5 = y-14
+    poli = {x,y,x2, y2,x3,y3, x3 + 10, y3,x3 +10, y4, x4,y4,x5,y5}
     love.graphics.setColor(255, 255, 255, 255)
-    love.graphics.circle('fill', x, y, 3*scaleX)
-    love.graphics.polygon('line', poli)
+    --love.graphics.circle('fill', x, y, 3*scaleX)
+    --]]
+
+    local r,g,b,a = love.graphics.getColor()
+    local x = love.mouse.getX() /scaleX
+    local y = love.mouse.getY() /scaleY
+    local scaleX = 1
+    local scaleY = 1
+    --love.graphics.polygon('fill', poli)
+
 
     love.graphics.setColor(r,g,b,a)
 end

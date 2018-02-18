@@ -1,4 +1,4 @@
-player = {hp = 100, hitRadius = 30, speed = 70, x = 0, y = 0}
+player = {hp = 100, hitRadius = 100, speed = 1000, x = 0, y = 0}
 player.colisions = {}
 player.targetX = player.x
 player.targetY = player.y
@@ -22,20 +22,19 @@ function player:move(vecX,vecY)
             vecY = 0
         end
     end
-    self.targetX = (self.targetX or 0) + vecX*self.speed*dt
-    self.targetY = (self.targetY or 0) + vecY*self.speed*dt
+    self.targetX = (self.targetX or 0) + vecX*self.speed*dt/camera.scaleX
+    self.targetY = (self.targetY or 0) + vecY*self.speed*dt/camera.scaleY
 end
 function player:draw()
     camera:set()
-
-    local r,g,b,a = love.graphics.getColor()
-    love.graphics.setColor(255, 206, 163,255)
-
     for k,v in ipairs(level) do
         v:draw()
     end
-
+    local r,g,b,a = love.graphics.getColor()
+    love.graphics.setColor(255, 255, 255,155)
     love.graphics.circle('fill', self.x, self.y, self.hitRadius)
+
+    --love.graphics.circle('fill', self.x, self.y, self.hitRadius)
     love.graphics.setColor(r, g, b, a)
     camera:unset()
 end
@@ -65,6 +64,10 @@ function player:update(dt)
 
         self.y = self.targetY
         self.x = self.targetX
-    camera.x = self.x - (love.graphics.getWidth()/2)/scaleX
-    camera.y = self.y - (love.graphics.getHeight()/2)/scaleY
+    camera.x = self.x - (love.graphics.getWidth()/2)/camera.scaleX
+    camera.y = self.y - (love.graphics.getHeight()/2)/camera.scaleY
+
+    for k,v in ipairs(level) do
+        v:update()
+    end
 end
