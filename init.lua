@@ -34,5 +34,5 @@ if not love.filesystem.exists( 'world1' ) then
 
 end
 
---chunkHandler:initWorld('worldId') -- needs to be worked on.
+chunkHandler:initWorld('worldId') -- needs to be worked on.
 tempMap = {}

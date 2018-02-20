@@ -45,12 +45,26 @@ function objSurface:new(o)
     o = o or {}
     setmetatable(o,self)
     self.__index = self
+    o:init()
     return o
 end
 
 function objSurface:init()
+    local sin = math.abs(math.sin(tileAngle) *tileSize*math.cos(tileAngle*2))
+    local cos = math.abs(math.cos(tileAngle) *tileSize*math.cos(tileAngle*2))
+
+    local k = self.dim.pos.x
+    local l = self.dim.pos.y
+    local z = self.dim.pos.z
+    local xx,yy = self.dim.pos.xx, self.dim.pos.yy
+
+    self.dim.x = (-2*cos +( cos*l) +k*cos) + 16*cos*xx + 16*cos*yy -((-2*cos +( cos) +cos) + 16*cos + 16*cos)
+    self.dim.y = (-sin + (sin*l) -k*sin) + 16*sin*yy - 16*sin*xx
+    self.dim.z = z
     local x = self.dim.x
     local y = self.dim.y
+    --{z = z,x = -2*cos +( cos*l) +k*cos, y = -sin + (sin*l) -k*sin}
+
     if not self.dim.w or not self.dim.h then self.dim.w,self.dim.h = tileSize,tileSize end
     if not self.dim.pos then self.dim.pos = {x=1,y=1,z=1} end --sets back default values.
     local w = self.dim.w
@@ -68,7 +82,7 @@ function objSurface:init()
 
     local points = {x1,y1,x2,y2,x3,y3,x4,y4}
     self.points = points
-    self.color = {255,255,255,100}
+    self.color = {255,255,255,255}
 end
 
 function objSurface:checkColision(x,y)
@@ -141,11 +155,35 @@ function objSurface:update(dt) -- Indeed this will «probably» need a huge opti
 
 end
 
+function objSurface:updateInactive(dt)
+    if not self.inactive then
+        self.inactive = true
+        self.inactiveTime = love.timer.getTime()
+    else
+        local Delta = love.timer.getTime()
+        if (Delta - self.inactiveTime) >=5 then
+            self = nil
+        end
+    end
+end
+
 
 function objSurface:draw()
     local br,bg,bb,ba = love.graphics.getColor()
     local r,g,b,a = self.color
     love.graphics.setColor(r, g, b, a)
+    love.graphics.polygon('fill',self.points)
+    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.polygon('line',self.points)
+    love.graphics.setColor(255, 0, 255, self.stroke)
+    love.graphics.polygon('line',self.points)
+    love.graphics.setColor(br,bg,bb,ba)
+end
+
+function objSurface:drawInactive()
+    local br,bg,bb,ba = love.graphics.getColor()
+    local r,g,b,a = self.color
+    love.graphics.setColor(r, g, b, 100)
     love.graphics.polygon('fill',self.points)
     love.graphics.setColor(0, 255, 0, 255)
     love.graphics.polygon('line',self.points)

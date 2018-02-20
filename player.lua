@@ -1,4 +1,4 @@
-player = {hp = 100, hitRadius = 100, speed = 190, x = 0, y = 0, chunkX = 0,chunkY = 0}
+player = {hp = 100, hitRadius = 100, speed = 190, x = 200, y = 2, chunkX = 1,chunkY = 1}
 
 player.targetX = player.x
 player.targetY = player.y
