@@ -1,3 +1,7 @@
+--setting tick variables
+--tick.rate = .8
+
+--
 binser = require'binser-master/binser'
 require'chunkHandler'
 print('--- Setting up variables. ('..os.clock()..')')
@@ -11,7 +15,7 @@ scaleY = love.graphics.getHeight()*1 / 1080
 font = love.graphics.newFont(30)
 love.graphics.setFont(font)
 
-tileAngle = 60
+tileAngle = math.rad(30)
 tileSize = 400
 
 editor = false

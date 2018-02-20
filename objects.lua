@@ -69,7 +69,7 @@ function objSurface:init()
     if not self.dim.pos then self.dim.pos = {x=1,y=1,z=1} end --sets back default values.
     local w = self.dim.w
     local h = self.dim.h
-    local a = 60
+    local a = tileAngle
     local length = math.cos(a*2)*self.dim.w
     local x1 = x
     local y1 = y + math.abs(math.sin(a))*length

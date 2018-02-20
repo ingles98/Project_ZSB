@@ -50,6 +50,6 @@ function player:update(dt)
     local w = chunkHandler.width
     local h = chunkHandler.height
 
-    chunkHandler:updateWorld()
+    chunkHandler:updateWorld(dt)
 
 end

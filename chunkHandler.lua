@@ -69,38 +69,41 @@ function chunkHandler:initWorld(worldId) --Perhaps will be deprecated..
 end
 
 function chunkHandler:updateWorld(dt)
-    local xx,yy = player.chunkX,player.chunkY
-    for k,v in ipairs(loadedMap) do
-
-        for cxx=xx-1,xx+1 do
-            for cyy=yy-1, yy+1 do
-                if (cxx == v.dim.pos.xx) and (cyy == v.dim.pos.yy) then
-                    v:update(dt)
-                else
-                    v:updateInactive(dt)
+        local xx,yy = player.chunkX,player.chunkY
+        for k,v in ipairs(loadedMap) do
+            for cxx=xx-1,xx+1 do
+                for cyy=yy-1, yy+1 do
+                    if (cxx == v.dim.pos.xx) and (cyy == v.dim.pos.yy) then
+                        v:update(dt)
+                    else
+                        v:updateInactive(dt)
+                    end
                 end
             end
+
         end
 
-    end
 end
 
 function chunkHandler:drawWorld()
-    local xx,yy = player.chunkX,player.chunkY
-    for k,v in ipairs(loadedMap) do
+    local dt = love.timer.getDelta()
+    --if dt <= 0.1 then
+        local xx,yy = player.chunkX,player.chunkY
+        for k,v in ipairs(loadedMap) do
 
-        for cxx=xx-1,xx+1 do
-            for cyy=yy-1, yy+1 do
-                if (cxx == v.dim.pos.xx) and (cyy == v.dim.pos.yy) then
-                    local r,g,b,a = love.graphics.getColor()
-                    love.graphics.setColor(255, 255, 255, 255)
-                    v:draw()
-                    love.graphics.setColor(r, g, b, a)
-                else
-                    v:drawInactive()
+            for cxx=xx-1,xx+1 do
+                for cyy=yy-1, yy+1 do
+                    if (cxx == v.dim.pos.xx) and (cyy == v.dim.pos.yy) then
+                        local r,g,b,a = love.graphics.getColor()
+                        love.graphics.setColor(255, 255, 255, 255)
+                        v:draw()
+                        love.graphics.setColor(r, g, b, a)
+                    else
+                        --v:drawInactive()
+                    end
                 end
             end
-        end
 
-    end
+        end
+    --end
 end

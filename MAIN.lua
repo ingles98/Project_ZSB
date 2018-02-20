@@ -1,3 +1,4 @@
+--tick = require'tick'
 print('Loading Core data..')
 print('--Initializing...')
 require 'init'
