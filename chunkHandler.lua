@@ -3,20 +3,6 @@ chunkHandler.width = 5 --might change varname later as it is misleading. Ammount
 chunkHandler.height = 5 -- ammount of chunks in the y axis
 chunkHandler.chunkSize = 16 -- square root of the ammount of tiles on one layer of a chunk
 
-local chunkThread = [[
-local xx,yy = player.chunkX,player.chunkY
-for k,v in ipairs(loadedMap) do
-    for cxx=xx-1,xx+1 do
-        for cyy=yy-1, yy+1 do
-            if (cxx == v.dim.pos.xx) and (cyy == v.dim.pos.yy) then
-                v:update(dt)
-            else
-                v:updateInactive(dt)
-            end
-        end
-    end
-end
-]]
 
 function chunkHandler:update(dt) -- not active,i guess
     self.currentChunkX, self.currentChunkY = player.chunkX, player.chunkY
@@ -81,10 +67,24 @@ function chunkHandler:initWorld(worldId) --Perhaps will be deprecated..
         end
     end
     --
-    
+
+
 end
 function chunkHandler:updateWorld(dt)
-
+  if player then
+      local xx,yy = player.chunkX,player.chunkY
+      for k,v in ipairs(loadedMap) do
+          for cxx=xx-1,xx+1 do
+              for cyy=yy-1, yy+1 do
+                  if (cxx == v.dim.pos.xx) and (cyy == v.dim.pos.yy) then
+                      v:update(dt)
+                  else
+                      v:updateInactive(dt)
+                  end
+              end
+          end
+      end
+  end
 end
 
 function chunkHandler:drawWorld()
