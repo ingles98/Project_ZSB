@@ -22,8 +22,6 @@ curArrow = love.mouse.newCursor(curArrow_Img, curArrow_Img:getWidth()/2, 1)
 
 print('---- Requiring Objects. ('..os.clock()..')')
 require 'objects'
-local sin = math.abs(math.sin(tileAngle) *tileSize*math.cos(tileAngle*2))
-local cos = math.abs(math.cos(tileAngle) *tileSize*math.cos(tileAngle*2))
 
 if not love.filesystem.exists( 'world1' ) then
     print('--- Constructing Level. ('..os.clock()..')')
@@ -32,6 +30,9 @@ if not love.filesystem.exists( 'world1' ) then
     world = {}
     chunk = {}
     local w,h = chunkHandler.width, chunkHandler.height
-    love.filesystem.createDirectory( 'world1' )
+    --love.filesystem.createDirectory( 'world1' )
 
 end
+
+--chunkHandler:initWorld('worldId') -- needs to be worked on.
+tempMap = {}

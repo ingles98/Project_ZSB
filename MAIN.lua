@@ -21,8 +21,10 @@ function love.draw()
     love.graphics.push()
     love.graphics.setColor(255, 0, 255, 255)
     love.graphics.scale(scaleX, scaleY)
-    love.graphics.printf('X: '..love.mouse.getX()..' - Y: '..love.mouse.getY(), 1920 - 350, 45, 300, 'right')
-    love.graphics.printf('Xx: '..player.chunkX..' - Yy: '..player.chunkY, 1920 - 350, 89, 300, 'right')
+    love.graphics.printf('X: '..love.mouse.getX()..' - Y: '..love.mouse.getY(), 1920 - 650, 45, 500, 'right')
+    love.graphics.printf('Xx: - Yy: ', 1920 - 650, 89, 500, 'right')
+    --love.graphics.printf('TC - X: '..testChunk[4][3]['dim']['x']..' - Y: '..testChunk[4][3]['dim']['y'], 1920 - 650, 110, 500, 'right')
+    love.graphics.printf('Player - X: '..player.x..' - Y: '..player.y, 1920 - 650, 130, 500, 'right')
     drawGui()
     love.graphics.pop()
     love.graphics.setColor(255, 255, 255, 255)
@@ -56,6 +58,15 @@ end
 function love.mousepressed(x, y, button, isTouch)
     for k,v in ipairs(gui) do
         v:mousePressed()
+    end
+    if button == 1 and love.keyboard.isDown('lshift') then -- creates tile at the mouse position
+        local sin = math.abs(math.sin(tileAngle) *tileSize*math.cos(tileAngle*2))
+        local cos = math.abs(math.cos(tileAngle) *tileSize*math.cos(tileAngle*2))
+        local x,y = camera.x + love.mouse.getX()/camera.scaleX - cos,camera.y + love.mouse.getY()/camera.scaleY -sin
+        local z = 0
+        tempMap[#tempMap +1] = objSurface:new({dim = {z = z,x = x, y = y} }) --ALTERAR CARALHO
+        local v = tempMap[#tempMap]
+        v:init()
     end
 end
 function love.wheelmoved(x, y)

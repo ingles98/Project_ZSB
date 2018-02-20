@@ -1,4 +1,4 @@
-player = {hp = 100, hitRadius = 100, speed = 190, x = 19500, y = 39,chunkX = 0,chunkY = 0}
+player = {hp = 100, hitRadius = 100, speed = 190, x = 0, y = 0, chunkX = 0,chunkY = 0}
 
 player.targetX = player.x
 player.targetY = player.y
@@ -13,10 +13,7 @@ end
 function player:draw()
     camera:set()
 
-    local r,g,b,a = love.graphics.getColor()
-    love.graphics.setColor(255, 255, 255, 255)
-    chunkHandler:drawWorld() -- grab this code around to the chunkhandler..
-    love.graphics.setColor(r, g, b, a)
+    chunkHandler:drawWorld()
 
 
     local r,g,b,a = love.graphics.getColor()

@@ -51,6 +51,8 @@ end
 function objSurface:init()
     local x = self.dim.x
     local y = self.dim.y
+    if not self.dim.w or not self.dim.h then self.dim.w,self.dim.h = tileSize,tileSize end
+    if not self.dim.pos then self.dim.pos = {x=1,y=1,z=1} end --sets back default values.
     local w = self.dim.w
     local h = self.dim.h
     local a = 60
