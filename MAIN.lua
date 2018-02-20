@@ -3,9 +3,7 @@ print('Loading Core data..')
 print('--Initializing...')
 require 'init'
 print('--Done. ('..os.clock()..')')
-require 'mainCamera'
 require 'modules'
-require 'player'
 require 'gui'
 print('Core data loaded. ('..os.clock()..')')
 print('Game loaded. Player is at '..player.x..', '..player.y)

@@ -12,10 +12,7 @@ function player:move(vecX,vecY)
 end
 function player:draw()
     camera:set()
-
     chunkHandler:drawWorld()
-
-
     local r,g,b,a = love.graphics.getColor()
     love.graphics.setColor(255, 255, 255,155)
     love.graphics.circle('fill', self.x, self.y, self.hitRadius)

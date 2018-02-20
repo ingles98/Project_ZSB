@@ -3,6 +3,21 @@ chunkHandler.width = 5 --might change varname later as it is misleading. Ammount
 chunkHandler.height = 5 -- ammount of chunks in the y axis
 chunkHandler.chunkSize = 16 -- square root of the ammount of tiles on one layer of a chunk
 
+local chunkThread = [[
+local xx,yy = player.chunkX,player.chunkY
+for k,v in ipairs(loadedMap) do
+    for cxx=xx-1,xx+1 do
+        for cyy=yy-1, yy+1 do
+            if (cxx == v.dim.pos.xx) and (cyy == v.dim.pos.yy) then
+                v:update(dt)
+            else
+                v:updateInactive(dt)
+            end
+        end
+    end
+end
+]]
+
 function chunkHandler:update(dt) -- not active,i guess
     self.currentChunkX, self.currentChunkY = player.chunkX, player.chunkY
     if ((self.currentChunkX ~= self.lastChunkX) or (self.currentChunkY ~= self.lastChunkY)) then
@@ -65,45 +80,34 @@ function chunkHandler:initWorld(worldId) --Perhaps will be deprecated..
             end
         end
     end
-
+    --
+    
 end
-
 function chunkHandler:updateWorld(dt)
-        local xx,yy = player.chunkX,player.chunkY
-        for k,v in ipairs(loadedMap) do
-            for cxx=xx-1,xx+1 do
-                for cyy=yy-1, yy+1 do
-                    if (cxx == v.dim.pos.xx) and (cyy == v.dim.pos.yy) then
-                        v:update(dt)
-                    else
-                        v:updateInactive(dt)
-                    end
-                end
-            end
-
-        end
 
 end
 
 function chunkHandler:drawWorld()
     local dt = love.timer.getDelta()
-    --if dt <= 0.1 then
-        local xx,yy = player.chunkX,player.chunkY
-        for k,v in ipairs(loadedMap) do
+    if not Drawdelta then Drawdelta = dt else Drawdelta = Drawdelta +dt end
+    if Drawdelta >= 1/(love.timer.getFPS()*2.1) then
+    local xx,yy = player.chunkX,player.chunkY
+    for k,v in ipairs(loadedMap) do
 
-            for cxx=xx-1,xx+1 do
-                for cyy=yy-1, yy+1 do
-                    if (cxx == v.dim.pos.xx) and (cyy == v.dim.pos.yy) then
-                        local r,g,b,a = love.graphics.getColor()
-                        love.graphics.setColor(255, 255, 255, 255)
-                        v:draw()
-                        love.graphics.setColor(r, g, b, a)
-                    else
-                        --v:drawInactive()
-                    end
+        for cxx=xx-1,xx+1 do
+            for cyy=yy-1, yy+1 do
+                if (cxx == v.dim.pos.xx) and (cyy == v.dim.pos.yy) then
+                    local r,g,b,a = love.graphics.getColor()
+                    love.graphics.setColor(255, 255, 255, 255)
+                    v:draw()
+                    love.graphics.setColor(r, g, b, a)
+                else
+                    --v:drawInactive()
                 end
             end
-
         end
-    --end
+
+    end
+    Drawdelta = 0
+    end
 end

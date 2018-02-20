@@ -3,6 +3,8 @@
 
 --
 binser = require'binser-master/binser'
+require 'player'
+require 'mainCamera'
 require'chunkHandler'
 print('--- Setting up variables. ('..os.clock()..')')
 windowFlags = {resizable = true}
@@ -37,6 +39,9 @@ if not love.filesystem.exists( 'world1' ) then
     --love.filesystem.createDirectory( 'world1' )
 
 end
+
+
+
 
 chunkHandler:initWorld('worldId') -- needs to be worked on.
 tempMap = {}
