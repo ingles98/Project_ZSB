@@ -1,12 +1,15 @@
---setting tick variables
---tick.rate = .8
-
---
+-- Module Loader
 binser = require'binser-master/binser'
-require 'player'
-require 'mainCamera'
-require'chunkHandler'
-print('--- Setting up variables. ('..os.clock()..')')
+require 'threadMgr'
+--require 'player'
+require 'objects'
+--require 'mainCamera'
+--require'chunkHandler' --going for world thread
+require 'modules'
+require 'gui'
+
+-- Initializing environment variables.
+global_main = true
 windowFlags = {resizable = true}
 curX = love.mouse.getX()
 curY = love.mouse.getY()
@@ -21,27 +24,8 @@ tileAngle = math.rad(30)
 tileSize = 400
 
 editor = false
-currentCur = 'arrow'
-print('--- Setting up cursor. ('..os.clock()..')')
-curArrow_Img = love.image.newImageData('Data/cursor_arrow.png')
-curArrow = love.mouse.newCursor(curArrow_Img, curArrow_Img:getWidth()/2, 1)
+-- Initializing threads
+thread.worldThread:start()
+channel.mTw:supply({[1] = tileAngle , [2] = tileSize} )
 
-print('---- Requiring Objects. ('..os.clock()..')')
-require 'objects'
-
-if not love.filesystem.exists( 'world1' ) then
-    print('--- Constructing Level. ('..os.clock()..')')
-    level = {}
-
-    world = {}
-    chunk = {}
-    local w,h = chunkHandler.width, chunkHandler.height
-    --love.filesystem.createDirectory( 'world1' )
-
-end
-
-
-
-
-chunkHandler:initWorld('worldId') -- needs to be worked on.
-tempMap = {}
+--chunkHandler:initWorld('worldId') -- needs to be worked on.

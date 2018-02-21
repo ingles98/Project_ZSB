@@ -1,5 +1,46 @@
+player = {hp = 100, hitRadius = 100, speed = 190, x = 200, y = 2, chunkX = 1,chunkY = 1}
+player.targetX = player.x
+player.targetY = player.y
+function player:move(vecX,vecY)
+    local dt = playerDt
+    self.targetX = (self.targetX or 0) + vecX*self.speed*dt/camera.scaleX
+    self.targetY = (self.targetY or 0) + vecY*self.speed*dt/camera.scaleY
+end
+function player:draw()
+    --camera:set()
+    --chunkHandler:drawWorld()
+    local r,g,b,a = love.graphics.getColor()
+    love.graphics.setColor(255, 255, 255,155)
+    love.graphics.circle('fill', self.x, self.y, self.hitRadius)
 
+    --love.graphics.circle('fill', self.x, self.y, self.hitRadius)
+    love.graphics.setColor(r, g, b, a)
+    --camera:unset()
+end
 
+function player:update(dt)
+    playerDt = dt
+    local up,down = love.keyboard.isDown("w"),love.keyboard.isDown("s")
+    local left,right = love.keyboard.isDown("a"),love.keyboard.isDown("d")
+      if up ~= down then
+          if up then self:move(0,-1)
+          elseif down then self:move(0,1) end
+      end
+      if left ~= right then
+          if left then
+              self:move(-1,0)
+          elseif right then
+              self:move(1,0)
+          end
+      end
+
+      self.y = self.targetY
+      self.x = self.targetX
+      camera.x = self.x - (love.graphics.getWidth()/2)/camera.scaleX
+      camera.y = self.y - (love.graphics.getHeight()/2)/camera.scaleY
+end
+
+--objects_environment
 Object = {
     colision = true,
     identifier = 'Object',
@@ -27,13 +68,13 @@ end
 function Object:update(dt)
 end
 
-objSurface = {
+objSurface = Object:new({
     colision = false,
     identifier = 'surface',
     color = {255,255,255,100},
     stroke = 0,
     dim = {z = 0, x = 100, y = 200,h = 10, w = 10, pos = {x=0,y=0,z=0,xx=0,yy=0}},
-}
+})
 
 function getTile(x,y,z) -- Not yet in use.
     for k,v in ipairs(level) do
@@ -50,6 +91,7 @@ function objSurface:new(o)
 end
 
 function objSurface:init()
+    self.identifier = self.identifier
     local sin = math.abs(math.sin(tileAngle) *tileSize*math.cos(tileAngle*2))
     local cos = math.abs(math.cos(tileAngle) *tileSize*math.cos(tileAngle*2))
 
